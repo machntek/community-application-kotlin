@@ -7,20 +7,36 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class Post(title: String, content: String) {
+class Post(userId: Long, userName: String, title: String, content: String) {
     @Id
     @GeneratedValue
-    var id: Long = 0
+    val id: Long = 0
 
     @Column(nullable = false)
-    var userId: Long = 0
+    val userId: Long = userId
+
+    @Column(nullable = false)
+    val userName: String = userName
 
     @Column(nullable = false)
     var title: String = title
+        protected set
 
     @Column(nullable = false, length = 3000)
     var content: String = content
+        protected set
 
     @Column
-    var createdDatetime: LocalDateTime = LocalDateTime.now()
+    var hit: Int = 0
+
+    @Column
+    val createdAt: LocalDateTime = LocalDateTime.now()
+
+    @Column
+    val editedAt: LocalDateTime? = null
+
+    fun updatePost(title: String, content: String) {
+        this.title = title
+        this.content = content
+    }
 }
