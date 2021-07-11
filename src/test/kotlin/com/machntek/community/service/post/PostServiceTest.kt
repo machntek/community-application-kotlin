@@ -1,6 +1,7 @@
 package com.machntek.community.service.post
 
 import com.machntek.community.controller.post.dto.SavePostReq
+import com.machntek.community.controller.post.dto.UpdatePostReq
 import com.machntek.community.domain.post.Post
 import com.machntek.community.domain.post.PostRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -71,5 +72,24 @@ class PostServiceTest {
 
         // then
         assertThat(postId).isEqualTo(0)
+    }
+
+    @Test
+    fun updatePost_success() {
+        // given
+        val request = UpdatePostReq("newTitle", "newContent")
+        val post = Optional.ofNullable(posts[0])
+        given(postRepository.findById(0)).willReturn(post)
+        val updatedPost = post.get().update(request.title, request.content)
+        given(postRepository.save(any())).willReturn(updatedPost)
+
+        // when
+        val postId = postService.update(0, request)
+
+        // then
+        assertThat(postId).isEqualTo(0)
+        assertThat(updatedPost.title).isEqualTo("newTitle")
+        assertThat(updatedPost.content).isEqualTo("newContent")
+        assertThat(updatedPost.editedAt).isNotNull()
     }
 }

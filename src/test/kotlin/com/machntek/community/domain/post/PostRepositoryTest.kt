@@ -52,7 +52,7 @@ class PostRepositoryTest() {
         val updatedContent = "newContent"
 
         // when
-        initPost.updatePost(updatedTitle, updatedContent)
+        initPost.update(updatedTitle, updatedContent)
         postRepository.save(initPost)
 
         // then

@@ -2,6 +2,7 @@ package com.machntek.community.service.post
 
 import com.machntek.community.controller.post.dto.GetPostRes
 import com.machntek.community.controller.post.dto.SavePostReq
+import com.machntek.community.controller.post.dto.UpdatePostReq
 import com.machntek.community.domain.post.PostRepository
 import org.springframework.stereotype.Service
 
@@ -13,7 +14,8 @@ class PostService(private val postRepository: PostRepository) {
     }
 
     fun getPost(postId: Long): GetPostRes {
-        val post = postRepository.findById(postId).orElseThrow { IllegalArgumentException("해당 게시글이 없습니다. id=${postId}") }
+        val post =
+            postRepository.findById(postId).orElseThrow { IllegalArgumentException("해당 게시글이 없습니다. id=${postId}") }
         return GetPostRes(post)
     }
 
@@ -21,8 +23,13 @@ class PostService(private val postRepository: PostRepository) {
         return postRepository.save(request.toEntity()).id
     }
 
-    fun update() {
+    fun update(postId: Long, request: UpdatePostReq): Long {
+        val post =
+            postRepository.findById(postId).orElseThrow { IllegalArgumentException("해당 게시글이 없습니다. id=${postId}") }
 
+        post.update(request.title, request.content)
+        postRepository.save(post)
+        return postId
     }
 
     fun delete() {

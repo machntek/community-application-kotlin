@@ -33,10 +33,12 @@ class Post(userId: Long, userName: String, title: String, content: String) {
     val createdAt: LocalDateTime = LocalDateTime.now()
 
     @Column
-    val editedAt: LocalDateTime? = null
+    var editedAt: LocalDateTime? = null
 
-    fun updatePost(title: String, content: String) {
+    fun update(title: String, content: String): Post {
         this.title = title
         this.content = content
+        this.editedAt = LocalDateTime.now()
+        return this
     }
 }
