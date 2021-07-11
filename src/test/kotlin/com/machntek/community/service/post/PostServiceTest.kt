@@ -9,9 +9,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers.any
+import org.mockito.BDDMockito.doNothing
 import org.mockito.BDDMockito.given
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 import java.util.*
 
@@ -91,5 +94,19 @@ class PostServiceTest {
         assertThat(updatedPost.title).isEqualTo("newTitle")
         assertThat(updatedPost.content).isEqualTo("newContent")
         assertThat(updatedPost.editedAt).isNotNull()
+    }
+
+    @Test
+    fun deletePost_success() {
+        // given
+        val post = Optional.ofNullable(posts[0])
+        given(postRepository.findById(0)).willReturn(post)
+        doNothing().`when`(postRepository).delete(post.get())
+
+        // when
+        postService.delete(0)
+
+        // then
+        verify(postRepository, times(1)).delete(post.get())
     }
 }

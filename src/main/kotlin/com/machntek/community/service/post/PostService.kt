@@ -32,7 +32,10 @@ class PostService(private val postRepository: PostRepository) {
         return postId
     }
 
-    fun delete() {
+    fun delete(postId: Long) {
+        val post =
+            postRepository.findById(postId).orElseThrow { IllegalArgumentException("해당 게시글이 없습니다. id=${postId}") }
 
+        postRepository.delete(post)
     }
 }
