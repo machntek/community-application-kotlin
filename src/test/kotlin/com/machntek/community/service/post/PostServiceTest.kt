@@ -12,6 +12,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
+import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class PostServiceTest {
@@ -42,6 +43,19 @@ class PostServiceTest {
 
         // then
         assertThat(result.size).isEqualTo(3)
+    }
+
+    @Test
+    fun getPost_success() {
+        // given
+        val post = Optional.ofNullable(posts[0])
+        given(postRepository.findById(0)).willReturn(post)
+
+        // when
+        val result = postService.getPost(0)
+
+        // then
+        assertThat(result).isNotNull()
     }
 
     @Test
